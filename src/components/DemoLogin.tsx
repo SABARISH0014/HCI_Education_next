@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { Eye, EyeOff, Lock, User, AlertCircle, CheckCircle2 } from "lucide-react"
+import { motion } from "framer-motion"
 
 interface DemoLoginProps {
   onLoginSuccess: () => void;
@@ -19,7 +20,10 @@ export default function DemoLogin({ onLoginSuccess, analysisMode, activePrincipl
   const [attempts, setAttempts] = useState(0)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const isFormValid = rollNo.trim() !== "" && password.trim() !== "" && termsAccepted
+  // Real-time inline validation
+  const rollNoValid = rollNo === "DEMO001"
+  const passwordValid = password === "Demo@123"
+  const isFormValid = rollNoValid && passwordValid && termsAccepted
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -55,7 +59,7 @@ export default function DemoLogin({ onLoginSuccess, analysisMode, activePrincipl
     if (activePrinciple === null) {
       return "hover:ring-2 hover:ring-teal/50 hover:ring-offset-1 transition-all"
     }
-    return "opacity-50 transition-all duration-300"
+    return "transition-all duration-300"
   }
 
   return (
@@ -82,8 +86,8 @@ export default function DemoLogin({ onLoginSuccess, analysisMode, activePrincipl
       {/* Form Area */}
       <div className="p-6 md:p-8 flex-grow">
         {/* Demo Credentials Box */}
-        <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 mb-6 text-sm">
-          <p className="font-semibold text-amber-800 mb-1 flex items-center gap-1">
+        <div className="bg-amber-50 border border-amber-200 text-amber-800 p-4 rounded-lg text-sm mb-6">
+          <p className="font-semibold mb-2 flex items-center gap-1.5">
             <AlertCircle size={16} /> Demo Credentials:
           </p>
           <div className="grid grid-cols-2 gap-2 font-mono text-amber-900 bg-amber-100/50 p-2 rounded border border-amber-200/50">
@@ -106,11 +110,11 @@ export default function DemoLogin({ onLoginSuccess, analysisMode, activePrincipl
           {/* Roll Number Field */}
           <div className={`space-y-2 ${getHighlightClass('visibility')}`}>
             <label htmlFor="rollNo" className={`text-sm font-bold text-navy flex justify-between ml-1 ${getHighlightClass('accessibility')}`}>
-              Roll Number
+              <span>Roll Number <span className="text-slate-500 font-normal text-xs ml-1">(Format: DEMO001)</span></span>
               <span className="text-rose-500" title="Required">*</span>
             </label>
             <div className="relative group">
-              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-teal-500 transition-colors">
+              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-navy transition-colors">
                 <User size={18} />
               </div>
               <input
@@ -118,25 +122,37 @@ export default function DemoLogin({ onLoginSuccess, analysisMode, activePrincipl
                 type="text"
                 required
                 aria-required="true"
-                aria-invalid={!!error}
+                aria-invalid={!!error || (rollNo.length > 0 && !rollNoValid)}
                 aria-describedby={error ? "login-error" : undefined}
                 value={rollNo}
-                onChange={(e) => setRollNo(e.target.value.toUpperCase())}
-                className="w-full pl-11 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-teal-500/50 focus:border-teal-500 transition-all text-slate-900 font-bold tracking-wide"
+                onChange={(e) => {
+                  setRollNo(e.target.value.toUpperCase());
+                  if (error) setError("");
+                }}
+                className={`w-full pl-10 pr-10 py-3 bg-white border rounded-xl transition-all text-slate-900 focus:outline-none focus:border-navy focus:ring-2 focus:ring-navy ${
+                  error ? 'border-rose-500 bg-rose-50 animate-shake' : 
+                  rollNoValid ? 'border-success bg-success/5' : 
+                  'border-slate-300'
+                }`}
                 placeholder="Enter Roll Number"
                 aria-label="Roll Number"
               />
+              {rollNoValid && (
+                <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+                  <CheckCircle2 size={20} className="text-success animate-in zoom-in" />
+                </div>
+              )}
             </div>
           </div>
 
           {/* Password Field */}
           <div className={`space-y-2 ${getHighlightClass('visibility')}`}>
             <label htmlFor="password" className={`text-sm font-bold text-navy flex justify-between ml-1 ${getHighlightClass('accessibility')}`}>
-              Password
+              <span>Password <span className="text-slate-500 font-normal text-xs ml-1">(Min 8 chars, 1 special)</span></span>
               <span className="text-rose-500" title="Required">*</span>
             </label>
             <div className="relative group">
-              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-teal-500 transition-colors">
+              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-navy transition-colors">
                 <Lock size={18} />
               </div>
               <input
@@ -144,33 +160,45 @@ export default function DemoLogin({ onLoginSuccess, analysisMode, activePrincipl
                 type={showPassword ? "text" : "password"}
                 required
                 aria-required="true"
-                aria-invalid={!!error}
+                aria-invalid={!!error || (password.length > 0 && !passwordValid)}
                 aria-describedby={error ? "login-error" : undefined}
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-11 pr-12 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-teal-500/50 focus:border-teal-500 transition-all text-slate-900 font-bold tracking-wide"
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  if (error) setError("");
+                }}
+                className={`w-full pl-10 pr-12 py-3 bg-white border rounded-xl transition-all text-slate-900 focus:outline-none focus:border-navy focus:ring-2 focus:ring-navy ${
+                  error ? 'border-rose-500 bg-rose-50 animate-shake' : 
+                  passwordValid ? 'border-success bg-success/5' : 
+                  'border-slate-300'
+                }`}
                 placeholder="Enter Password"
                 aria-label="Password"
               />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-navy transition-colors"
-                aria-label={showPassword ? "Hide password" : "Show password"}
-              >
-                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-              </button>
+              <div className="absolute inset-y-0 right-0 pr-3 flex items-center gap-2">
+                {passwordValid && (
+                  <CheckCircle2 size={20} className="text-success animate-in zoom-in pointer-events-none" />
+                )}
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="p-1 text-slate-400 hover:text-navy transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-navy rounded-md"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
             </div>
           </div>
 
           {/* Options */}
           <div className="flex items-center justify-between text-sm">
-            <label className="flex items-center gap-2 cursor-pointer">
+            <label className="flex items-center gap-2 cursor-pointer min-h-[44px] py-2">
               <input 
                 type="checkbox" 
                 checked={rememberMe}
                 onChange={(e) => setRememberMe(e.target.checked)}
-                className="rounded border-slate-300 text-navy focus:ring-navy w-4 h-4 cursor-pointer" 
+                className="rounded border-slate-300 text-navy focus:ring-navy w-5 h-5 cursor-pointer" 
               />
               <span className="text-slate-600 select-none">Remember me</span>
             </label>
@@ -178,7 +206,7 @@ export default function DemoLogin({ onLoginSuccess, analysisMode, activePrincipl
             <a 
               href="#" 
               onClick={(e) => { e.preventDefault(); setError("Password recovery flow initiated (Simulation).") }}
-              className={`text-teal hover:text-teal-light font-medium transition-colors ${getHighlightClass('error-recovery')}`}
+              className={`text-teal hover:text-teal-light font-medium transition-colors flex items-center min-h-[44px] py-2 px-1 ${getHighlightClass('error-recovery')}`}
             >
               Forgot Password?
             </a>
@@ -186,12 +214,12 @@ export default function DemoLogin({ onLoginSuccess, analysisMode, activePrincipl
 
           {/* Terms & Conditions (For Error Prevention demo) */}
           <div className={`pt-2 ${getHighlightClass('error-prevention')}`}>
-            <label className={`flex items-start gap-2 cursor-pointer p-2 -mx-2 rounded hover:bg-slate-50 transition-colors ${!termsAccepted && rollNo && password ? 'bg-rose-50 text-rose-700' : ''}`}>
+            <label className={`flex items-start gap-2 cursor-pointer p-2 min-h-[44px] -mx-2 rounded hover:bg-slate-50 transition-colors ${!termsAccepted && rollNo && password ? 'bg-rose-50 text-rose-700' : ''}`}>
               <input 
                 type="checkbox" 
                 checked={termsAccepted}
                 onChange={(e) => setTermsAccepted(e.target.checked)}
-                className="rounded border-slate-300 text-navy focus:ring-navy w-4 h-4 mt-0.5 cursor-pointer" 
+                className="rounded border-slate-300 text-navy focus:ring-navy w-5 h-5 mt-0.5 cursor-pointer shrink-0" 
               />
               <span className="text-xs text-slate-600 select-none">
                 I agree to the <a href="#" className="text-teal hover:underline" onClick={e=>e.preventDefault()}>Terms and Conditions</a> and authorize this demo login.
@@ -201,25 +229,35 @@ export default function DemoLogin({ onLoginSuccess, analysisMode, activePrincipl
 
           {/* Submit Button */}
           <div className={`pt-2 ${getHighlightClass('error-prevention')}`}>
-            <button
+            <motion.button
+              whileTap={isFormValid && !isSubmitting ? { scale: 0.98 } : {}}
               type="submit"
               disabled={!isFormValid || isSubmitting}
-              className={`w-full py-3 rounded-lg font-bold text-white transition-all flex justify-center items-center gap-2
+              className={`w-full py-4 min-h-[56px] rounded-xl font-bold text-white transition-all flex justify-center items-center gap-3
                 ${isFormValid 
                   ? 'bg-navy hover:bg-navy-light shadow-md hover:shadow-lg hover:-translate-y-0.5' 
                   : 'bg-slate-300 text-slate-500 cursor-not-allowed'}
-                ${isSubmitting ? 'opacity-80 cursor-wait' : ''}
+                ${isSubmitting ? 'opacity-90 cursor-wait' : ''}
               `}
             >
               {isSubmitting ? (
                 <>
-                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                  Authenticating...
+                  <div className="flex gap-1.5">
+                    {[0, 1, 2].map((i) => (
+                      <motion.div
+                        key={i}
+                        className="w-2.5 h-2.5 bg-white rounded-full"
+                        animate={{ y: [0, -8, 0], opacity: [0.5, 1, 0.5] }}
+                        transition={{ duration: 0.6, repeat: Infinity, delay: i * 0.15 }}
+                      />
+                    ))}
+                  </div>
+                  <span>Authenticating...</span>
                 </>
               ) : (
                 "Secure Login"
               )}
-            </button>
+            </motion.button>
           </div>
         </form>
       </div>

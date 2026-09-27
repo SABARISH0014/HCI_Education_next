@@ -67,7 +67,7 @@ export default function DemoApp() {
   }
 
   return (
-    <div className="flex flex-col xl:flex-row gap-8 w-full max-w-7xl mx-auto px-2">
+    <div className="flex flex-col lg:flex-row gap-8 w-full max-w-7xl mx-auto px-2">
       {/* Main Demo Area */}
       <div className={`flex-grow rounded-3xl overflow-hidden border shadow-2xl bg-slate-50 relative min-h-[650px] flex flex-col transition-all duration-500 ${analysisMode ? 'border-teal ring-4 ring-teal/20 shadow-teal-500/20' : 'border-slate-300 shadow-slate-300/30'}`}>
         
@@ -93,6 +93,12 @@ export default function DemoApp() {
 
         {/* The Application Area */}
         <div className={`relative flex-grow flex items-center justify-center p-4 md:p-8 bg-gradient-to-br from-slate-100 to-slate-200 overflow-hidden ${presentationMode ? 'scale-[1.02] transform origin-top transition-transform duration-500' : 'transition-transform duration-500'}`}>
+          {/* Spotlight Overlay */}
+          <div 
+            className={`absolute inset-0 z-[5] pointer-events-none transition-all duration-500 ${analysisMode && activePrinciple ? 'opacity-100' : 'opacity-0'}`} 
+            aria-hidden="true"
+          />
+          
           {isLoggedIn ? (
             <DemoDashboard 
               onLogout={handleLogout} 
@@ -110,22 +116,22 @@ export default function DemoApp() {
       </div>
 
       {/* Control Panel */}
-      <div className="w-full xl:w-96 flex flex-col gap-4">
+      <div className="w-full lg:w-96 flex flex-col gap-4">
         {/* Mode Toggles */}
-        <div className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
-          <h3 className="font-bold text-navy mb-4 flex items-center gap-2">
-            <Settings size={18} /> Demo Controls
+        <div className="bg-slate-900/50 p-5 rounded-xl border border-slate-800 shadow-sm backdrop-blur-sm">
+          <h3 className="font-bold text-white mb-4 flex items-center gap-2">
+            <Settings size={18} className="text-teal-400" /> Demo Controls
           </h3>
           
           <div className="space-y-3">
-            <label className="flex items-center justify-between p-3 rounded-lg border cursor-pointer transition-colors hover:bg-slate-50">
+            <label className="flex items-center justify-between p-3 rounded-lg border border-slate-800 cursor-pointer transition-colors hover:bg-slate-800/50">
               <div className="flex items-center gap-3">
-                <div className={`p-2 rounded-md ${analysisMode ? 'bg-teal text-white' : 'bg-slate-100 text-slate-500'}`}>
+                <div className={`p-2 rounded-md ${analysisMode ? 'bg-teal text-slate-950' : 'bg-slate-800 text-slate-400'}`}>
                   <Eye size={18} />
                 </div>
                 <div>
-                  <div className="font-semibold text-sm">HCI Analysis Mode</div>
-                  <div className="text-xs text-slate-500">Highlight UI principles</div>
+                  <div className="font-semibold text-sm text-slate-200">HCI Analysis Mode</div>
+                  <div className="text-xs text-slate-400">Highlight UI principles</div>
                 </div>
               </div>
               <div className={`w-10 h-5 rounded-full relative transition-colors ${analysisMode ? 'bg-teal' : 'bg-slate-300'}`}>
@@ -139,14 +145,14 @@ export default function DemoApp() {
               />
             </label>
 
-            <label className="flex items-center justify-between p-3 rounded-lg border cursor-pointer transition-colors hover:bg-slate-50">
+            <label className="flex items-center justify-between p-3 rounded-lg border border-slate-800 cursor-pointer transition-colors hover:bg-slate-800/50">
               <div className="flex items-center gap-3">
-                <div className={`p-2 rounded-md ${presentationMode ? 'bg-purple-600 text-white' : 'bg-slate-100 text-slate-500'}`}>
+                <div className={`p-2 rounded-md ${presentationMode ? 'bg-purple-500 text-white' : 'bg-slate-800 text-slate-400'}`}>
                   <PresentationIcon size={18} />
                 </div>
                 <div>
-                  <div className="font-semibold text-sm">Presentation Mode</div>
-                  <div className="text-xs text-slate-500">Guided step-by-step</div>
+                  <div className="font-semibold text-sm text-slate-200">Presentation Mode</div>
+                  <div className="text-xs text-slate-400">Guided step-by-step</div>
                 </div>
               </div>
               <div className={`w-10 h-5 rounded-full relative transition-colors ${presentationMode ? 'bg-purple-600' : 'bg-slate-300'}`}>
@@ -164,31 +170,31 @@ export default function DemoApp() {
 
         {/* Presentation Controls */}
         {presentationMode && (
-          <div className="bg-purple-50 p-5 rounded-xl border border-purple-100 shadow-sm animate-in fade-in slide-in-from-top-4">
-            <h3 className="font-bold text-purple-900 mb-2 flex items-center gap-2">
+          <div className="bg-purple-950/30 p-5 rounded-xl border border-purple-900/50 shadow-sm animate-in fade-in slide-in-from-top-4">
+            <h3 className="font-bold text-purple-300 mb-2 flex items-center gap-2">
               <MonitorPlay size={18} /> Live Presentation
             </h3>
             
-            <div className="bg-white p-4 rounded-lg border border-purple-100 mb-4 shadow-sm">
-              <div className="text-xs font-bold text-purple-600 mb-1 uppercase tracking-wider">
+            <div className="bg-slate-900/80 p-4 rounded-lg border border-purple-900/50 mb-4 shadow-sm">
+              <div className="text-xs font-bold text-purple-400 mb-1 uppercase tracking-wider">
                 Step {presentationStep + 1} of {presentationSteps.length}
               </div>
-              <h4 className="font-bold text-navy mb-1">{presentationSteps[presentationStep].title}</h4>
-              <p className="text-sm text-slate-600">{presentationSteps[presentationStep].desc}</p>
+              <h4 className="font-bold text-slate-100 mb-1">{presentationSteps[presentationStep].title}</h4>
+              <p className="text-sm text-slate-300">{presentationSteps[presentationStep].desc}</p>
             </div>
             
             <div className="flex gap-2">
               <button 
                 onClick={handlePrevStep}
                 disabled={presentationStep === 0}
-                className="flex-1 py-2 px-4 rounded-lg font-medium text-sm border border-purple-200 text-purple-700 bg-white hover:bg-purple-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="flex-1 py-2 px-4 rounded-lg font-medium text-sm border border-purple-800 text-purple-300 bg-slate-900 hover:bg-purple-900/40 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 Previous
               </button>
               <button 
                 onClick={handleNextStep}
                 disabled={presentationStep === presentationSteps.length - 1}
-                className="flex-1 py-2 px-4 rounded-lg font-medium text-sm bg-purple-600 text-white hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="flex-1 py-2 px-4 rounded-lg font-medium text-sm bg-purple-600 text-white hover:bg-purple-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 Next Step
               </button>
@@ -198,8 +204,8 @@ export default function DemoApp() {
 
         {/* Principles Explorer */}
         {analysisMode && !presentationMode && (
-          <div className="bg-teal/5 p-5 rounded-xl border border-teal/20 shadow-sm flex-grow flex flex-col">
-            <h3 className="font-bold text-teal-900 mb-4 flex items-center gap-2">
+          <div className="bg-slate-900/50 p-5 rounded-xl border border-teal-900/30 shadow-sm flex-grow flex flex-col backdrop-blur-sm">
+            <h3 className="font-bold text-teal-400 mb-4 flex items-center gap-2">
               <Info size={18} /> Explore HCI Principles
             </h3>
             
@@ -210,12 +216,12 @@ export default function DemoApp() {
                   onClick={() => setActivePrinciple(principle.id === activePrinciple ? null : principle.id)}
                   className={`text-left p-3 rounded-lg border transition-all ${
                     activePrinciple === principle.id 
-                      ? 'bg-teal text-white border-teal shadow-md' 
-                      : 'bg-white text-navy hover:border-teal/50 hover:bg-teal/5 border-slate-200'
+                      ? 'bg-teal text-slate-950 border-teal shadow-md' 
+                      : 'bg-slate-800 text-slate-200 hover:border-teal/50 hover:bg-slate-800/80 border-slate-700'
                   }`}
                 >
                   <div className="font-bold text-sm mb-1">{principle.name}</div>
-                  <div className={`text-xs ${activePrinciple === principle.id ? 'text-teal-50' : 'text-slate-500'}`}>
+                  <div className={`text-xs ${activePrinciple === principle.id ? 'text-teal-950' : 'text-slate-400'}`}>
                     {principle.definition}
                   </div>
                 </button>

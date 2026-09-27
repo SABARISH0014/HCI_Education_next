@@ -4,6 +4,7 @@ import { useState } from "react"
 import { quizQuestions } from "@/data/questions"
 import { CheckCircle2, XCircle, ChevronRight, RotateCcw, Home } from "lucide-react"
 import Link from "next/link"
+import { motion, AnimatePresence } from "framer-motion"
 
 export default function Quiz() {
   const [currentQuestionIdx, setCurrentQuestionIdx] = useState(0)
@@ -123,39 +124,43 @@ export default function Quiz() {
           </span>
         </div>
 
-        <h2 className="text-2xl md:text-3xl font-bold text-navy mb-10 leading-snug">
+        <h2 className="text-2xl md:text-3xl font-extrabold text-navy mb-12 leading-relaxed">
           {currentQuestion.text}
         </h2>
 
-        <div className="space-y-4 mb-10" role="radiogroup" aria-label="Quiz options">
+        <div className="space-y-6 mb-12" role="radiogroup" aria-label="Quiz options">
           {currentQuestion.options.map((option, index) => {
             const isSelected = selectedOption === index
             const isCorrectAnswer = index === currentQuestion.correctAnswer
             
-            let optionStyles = "border-slate-300 bg-white hover:bg-slate-50 hover:border-slate-400 text-slate-700"
+            let optionStyles = "cursor-pointer border border-slate-200 hover:bg-slate-50 hover:border-slate-300 text-slate-700"
             
             if (isAnswered) {
               if (isCorrectAnswer) {
-                optionStyles = "border-success bg-success/5 text-success font-bold shadow-sm"
+                optionStyles = "border-success bg-success/5 text-success font-bold shadow-sm border-2"
               } else if (isSelected && !isCorrectAnswer) {
-                optionStyles = "border-error bg-error/5 text-error font-bold"
+                optionStyles = "border-error bg-error/5 text-error font-bold border-2"
               } else {
                 optionStyles = "border-slate-200 bg-slate-50 opacity-60 text-slate-500"
               }
             } else if (isSelected) {
-              optionStyles = "border-navy bg-navy/5 text-navy font-bold shadow-md ring-1 ring-navy"
+              optionStyles = "border-teal-500 bg-teal-50 text-teal-800 font-bold shadow-md ring-1 ring-teal-500"
             }
 
             return (
-              <button
+              <motion.button
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: index * 0.1 }}
+                whileTap={!isAnswered ? { scale: 0.98 } : {}}
                 key={index}
                 onClick={() => handleOptionSelect(index)}
                 disabled={isAnswered}
                 role="radio"
                 aria-checked={isSelected}
-                className={`w-full text-left p-5 md:p-6 rounded-xl border-2 transition-all flex justify-between items-center group focus:outline-none focus:ring-4 focus:ring-navy/20 ${optionStyles}`}
+                className={`w-full text-left p-4 rounded-lg transition-all flex justify-between items-center group focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 shadow-sm ${optionStyles}`}
               >
-                <div className="flex gap-4 md:gap-6 items-center">
+                <div className="flex gap-4 items-center">
                   <div className={`w-10 h-10 shrink-0 rounded-full flex items-center justify-center font-extrabold text-base border-2 transition-colors
                     ${isAnswered && isCorrectAnswer ? 'bg-success border-success text-white' : 
                       isAnswered && isSelected && !isCorrectAnswer ? 'bg-error border-error text-white' : 
@@ -167,7 +172,7 @@ export default function Quiz() {
                 
                 {isAnswered && isCorrectAnswer && <CheckCircle2 className="text-success shrink-0" size={28} aria-label="Correct Answer" />}
                 {isAnswered && isSelected && !isCorrectAnswer && <XCircle className="text-error shrink-0" size={28} aria-label="Incorrect Answer" />}
-              </button>
+              </motion.button>
             )
           })}
         </div>
@@ -188,9 +193,10 @@ export default function Quiz() {
           </div>
         )}
 
-        <div className="flex justify-end pt-4 border-t border-slate-100">
+        <div className="flex justify-end pt-8 mt-12 border-t border-slate-200">
           {!isAnswered ? (
-            <button
+            <motion.button
+              whileTap={selectedOption !== null ? { scale: 0.98 } : {}}
               onClick={handleSubmit}
               disabled={selectedOption === null}
               className={`px-10 py-4 rounded-xl font-bold text-lg transition-all shadow-md focus:outline-none focus:ring-4 focus:ring-navy/30
@@ -199,15 +205,16 @@ export default function Quiz() {
                   : 'bg-slate-200 text-slate-400 cursor-not-allowed shadow-none'}`}
             >
               Submit Answer
-            </button>
+            </motion.button>
           ) : (
-            <button
+            <motion.button
+              whileTap={{ scale: 0.98 }}
               onClick={handleNext}
               className="px-10 py-4 bg-teal hover:bg-teal-dark text-white rounded-xl font-bold text-lg transition-all flex items-center gap-3 shadow-md hover:shadow-lg hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-teal/30"
             >
               {currentQuestionIdx < totalQuestions - 1 ? 'Next Question' : 'View Results'}
               <ChevronRight size={24} />
-            </button>
+            </motion.button>
           )}
         </div>
       </div>
