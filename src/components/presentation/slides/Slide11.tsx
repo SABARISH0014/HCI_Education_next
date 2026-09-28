@@ -1,59 +1,81 @@
-import { Smartphone, Headset, Mic } from "lucide-react"
-
 export default function Slide11() {
   return (
-    <div className="flex flex-col h-full">
-      <header className="mb-10">
-        <h1 className="text-3xl md:text-4xl font-bold text-navy">Future HCI: Beyond the Screen</h1>
-        <div className="w-16 h-1 bg-teal mt-4"></div>
+    <div className="flex flex-col h-full bg-white">
+      <header className="mb-12">
+        <h1 className="text-5xl font-black text-slate-900 tracking-tight">References</h1>
       </header>
 
-      <div className="flex-grow flex flex-col md:flex-row gap-8 items-center">
-        <div className="w-full md:w-1/2 p-8 bg-slate-50 border border-slate-200 rounded-2xl relative">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-teal/10 rounded-full blur-[40px] translate-x-1/2 -translate-y-1/2"></div>
-          
-          <h3 className="text-2xl font-bold text-navy mb-6 border-b pb-4">The Next Frontier</h3>
-          <p className="text-slate-700 leading-relaxed mb-6 text-lg">
-            As educational technology evolves, the "Computer" in HCI is becoming less visible. The future of student interaction moves beyond flat screens and keyboards.
-          </p>
-          <ul className="space-y-4">
-            <li className="flex items-center gap-3 text-slate-700">
-              <div className="w-2 h-2 bg-teal rounded-full"></div> Seamless multi-device ecosystems
-            </li>
-            <li className="flex items-center gap-3 text-slate-700">
-              <div className="w-2 h-2 bg-teal rounded-full"></div> Spatially-aware learning environments
-            </li>
-            <li className="flex items-center gap-3 text-slate-700">
-              <div className="w-2 h-2 bg-teal rounded-full"></div> Ubiquitous computing in classrooms
-            </li>
-          </ul>
-        </div>
-
-        <div className="w-full md:w-1/2 flex flex-col gap-4">
-          <div className="flex gap-4 p-5 bg-white border border-slate-200 rounded-xl shadow-sm items-center">
-            <div className="p-3 bg-blue-50 text-blue-600 rounded-lg"><Headset size={28} /></div>
+      <div className="flex-grow overflow-y-auto">
+        <ul className="space-y-8 max-w-4xl">
+          <li className="flex gap-6 border-b border-slate-100 pb-8">
+            <span className="text-slate-300 font-black text-3xl leading-none">01</span>
             <div>
-              <h4 className="font-bold text-navy">Virtual & Augmented Reality</h4>
-              <p className="text-sm text-slate-600">Immersive interfaces for complex engineering or medical visualizations.</p>
+              <p className="text-slate-900 font-bold text-lg mb-2">
+                Hasani, L. M., Nuzulismah, R. S., Santoso, H. B., Junus, K., & Hardianto, D. (2024).
+              </p>
+              <p className="text-slate-600">
+                Designing an online course using an EXD model: A case of Human–Computer Interaction undergraduate course. 
+                <span className="italic"> Heliyon, 10</span>(12), e33254. 
+                <a href="https://doi.org/10.1016/j.heliyon.2024.e33254" className="text-slate-900 font-bold hover:underline ml-2" target="_blank" rel="noopener noreferrer">https://doi.org/10.1016/j.heliyon.2024.e33254</a>
+              </p>
             </div>
-          </div>
+          </li>
           
-          <div className="flex gap-4 p-5 bg-white border border-slate-200 rounded-xl shadow-sm items-center">
-            <div className="p-3 bg-purple-50 text-purple-600 rounded-lg"><Mic size={28} /></div>
+          <li className="flex gap-6 border-b border-slate-100 pb-8">
+            <span className="text-slate-300 font-black text-3xl leading-none">02</span>
             <div>
-              <h4 className="font-bold text-navy">Voice User Interfaces (VUI)</h4>
-              <p className="text-sm text-slate-600">Hands-free interaction for queries in labs or workshops.</p>
+              <p className="text-slate-900 font-bold text-lg mb-2">
+                Tunsisa, B., & Demissie, D. (2024).
+              </p>
+              <p className="text-slate-600">
+                Assessing the Students' Usability of e-Learning Management System: Case in Hawassa University, Ethiopia. 
+                <span className="italic"> International Journal of Computer Games Technology, 2024</span>, 2378236.
+                <a href="https://doi.org/10.1155/2024/2378236" className="text-slate-900 font-bold hover:underline ml-2" target="_blank" rel="noopener noreferrer">https://doi.org/10.1155/2024/2378236</a>
+              </p>
             </div>
-          </div>
+          </li>
           
-          <div className="flex gap-4 p-5 bg-white border border-slate-200 rounded-xl shadow-sm items-center">
-            <div className="p-3 bg-emerald-50 text-emerald-600 rounded-lg"><Smartphone size={28} /></div>
+          <li className="flex gap-6 border-b border-slate-100 pb-8">
+            <span className="text-slate-300 font-black text-3xl leading-none">03</span>
             <div>
-              <h4 className="font-bold text-navy">Mobile-First Microlearning</h4>
-              <p className="text-sm text-slate-600">Bite-sized, highly accessible interfaces designed for learning on the go.</p>
+              <p className="text-slate-900 font-bold text-lg mb-2">Abuhlfaia, K., & de Quincey, E. (2018).</p>
+              <p className="text-slate-500 uppercase tracking-widest text-xs font-bold">
+                Cited in original presentation (Incomplete bibliographic details pending verification).
+              </p>
             </div>
-          </div>
-        </div>
+          </li>
+          
+          <li className="flex gap-6 border-b border-slate-100 pb-8">
+            <span className="text-slate-300 font-black text-3xl leading-none">04</span>
+            <div>
+              <p className="text-slate-900 font-bold text-lg mb-2">Lu, Y., et al. (2022).</p>
+              <p className="text-slate-500 uppercase tracking-widest text-xs font-bold">
+                Cited in original presentation (Incomplete bibliographic details pending verification).
+              </p>
+            </div>
+          </li>
+          
+          <li className="flex gap-6 border-b border-slate-100 pb-8">
+            <span className="text-slate-300 font-black text-3xl leading-none">05</span>
+            <div>
+              <p className="text-slate-900 font-bold text-lg mb-2">Gopal, R. (2024).</p>
+              <p className="text-slate-500 uppercase tracking-widest text-xs font-bold">
+                Cited in original presentation (Incomplete bibliographic details pending verification).
+              </p>
+            </div>
+          </li>
+          
+          <li className="flex gap-6">
+            <span className="text-slate-300 font-black text-3xl leading-none">06</span>
+            <div>
+              <p className="text-slate-900 font-bold text-lg mb-2">PSG College of Technology.</p>
+              <p className="text-slate-600 mb-2">E-Campus Student Portal Interface.</p>
+              <p className="text-slate-500 uppercase tracking-widest text-xs font-bold">
+                Referenced as the primary subject for HCI theoretical evaluation.
+              </p>
+            </div>
+          </li>
+        </ul>
       </div>
     </div>
   )

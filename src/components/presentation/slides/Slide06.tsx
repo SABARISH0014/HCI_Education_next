@@ -1,47 +1,69 @@
-import { Eye, AlertCircle, CheckCircle2 } from "lucide-react"
+import { Users, ClipboardList, FileLineChart } from "lucide-react"
 
 export default function Slide06() {
   return (
-    <div className="flex flex-col h-full">
-      <header className="mb-10">
-        <h1 className="text-3xl md:text-4xl font-bold text-navy">Applying HCI Principles to E-Campus</h1>
-        <div className="w-16 h-1 bg-teal mt-4"></div>
+    <div className="flex flex-col h-full bg-white">
+      <header className="mb-8">
+        <h1 className="text-5xl font-black text-slate-900 tracking-tight">Interaction Journey & Evaluation</h1>
       </header>
 
-      <div className="flex-grow flex flex-col gap-6">
-        <div className="bg-white p-6 rounded-xl border-l-4 border-l-teal border-y border-r border-slate-200 shadow-sm flex items-start gap-4 hover:-translate-y-1 transition-transform">
-          <div className="bg-teal/10 p-3 rounded-full text-teal shrink-0">
-            <Eye size={24} />
-          </div>
-          <div>
-            <h3 className="text-xl font-bold text-navy mb-2">Visibility</h3>
-            <p className="text-slate-600">
-              The login fields (Roll Number and Password) are placed centrally, ensuring they are the first interactive elements the user notices. There is no ambiguity about where to start.
-            </p>
+      <div className="flex-grow flex flex-col gap-12">
+        {/* Top Half: Journey */}
+        <div>
+          <h2 className="text-xl font-bold text-slate-900 uppercase tracking-widest mb-6">Student Journey</h2>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 relative">
+            <div className="absolute top-6 left-0 w-full h-0.5 bg-slate-200 hidden md:block"></div>
+            
+            <div className="relative z-10 flex flex-col items-center text-center">
+              <div className="w-12 h-12 bg-slate-900 text-white flex items-center justify-center font-bold text-xl mb-4">1</div>
+              <h3 className="font-bold text-slate-900 mb-2">Authentication</h3>
+              <p className="text-sm text-slate-600">User inputs Roll No & Password. System validates and provides entry.</p>
+            </div>
+            
+            <div className="relative z-10 flex flex-col items-center text-center">
+              <div className="w-12 h-12 bg-slate-900 text-white flex items-center justify-center font-bold text-xl mb-4">2</div>
+              <h3 className="font-bold text-slate-900 mb-2">Navigation</h3>
+              <p className="text-sm text-slate-600">User scans the sidebar to locate the desired module (e.g., Attendance).</p>
+            </div>
+            
+            <div className="relative z-10 flex flex-col items-center text-center">
+              <div className="w-12 h-12 bg-slate-900 text-white flex items-center justify-center font-bold text-xl mb-4">3</div>
+              <h3 className="font-bold text-slate-900 mb-2">Information Retrieval</h3>
+              <p className="text-sm text-slate-600">System presents data tabularly. User processes their current standing.</p>
+            </div>
+            
+            <div className="relative z-10 flex flex-col items-center text-center">
+              <div className="w-12 h-12 bg-slate-900 text-white flex items-center justify-center font-bold text-xl mb-4">4</div>
+              <h3 className="font-bold text-slate-900 mb-2">Task Completion</h3>
+              <p className="text-sm text-slate-600">User logs out or switches modules. Feedback confirms session end.</p>
+            </div>
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-xl border-l-4 border-l-rose-500 border-y border-r border-slate-200 shadow-sm flex items-start gap-4 hover:-translate-y-1 transition-transform">
-          <div className="bg-rose-100 p-3 rounded-full text-rose-600 shrink-0">
-            <AlertCircle size={24} />
+        {/* Bottom Half: Evaluation */}
+        <div className="border-t border-slate-200 pt-8 flex-grow flex flex-col">
+          <h2 className="text-xl font-bold text-slate-900 uppercase tracking-widest mb-6">Evaluation Methods</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 flex-grow">
+            <div className="bg-slate-50 p-6 border border-slate-200 flex flex-col">
+              <Users className="text-slate-900 mb-4" size={32} />
+              <h3 className="text-lg font-bold text-slate-900 mb-2">1. Observational Studies</h3>
+              <p className="text-slate-600 text-sm">Watch students interact with the portal in a controlled environment. Note where they hesitate, misclick, or express frustration while trying to complete common tasks.</p>
+            </div>
+            
+            <div className="bg-slate-50 p-6 border border-slate-200 flex flex-col">
+              <ClipboardList className="text-slate-900 mb-4" size={32} />
+              <h3 className="text-lg font-bold text-slate-900 mb-2">2. Heuristic Evaluation</h3>
+              <p className="text-slate-600 text-sm">HCI experts review the E-Campus interface against established design principles (like Nielsen's 10 Usability Heuristics) to identify violations of UI standards.</p>
+            </div>
+            
+            <div className="bg-slate-50 p-6 border border-slate-200 flex flex-col">
+              <FileLineChart className="text-slate-900 mb-4" size={32} />
+              <h3 className="text-lg font-bold text-slate-900 mb-2">3. Surveys & Analytics</h3>
+              <p className="text-slate-600 text-sm">Collect quantitative data via System Usability Scale (SUS) questionnaires. Analyze server logs to see which pages have the highest drop-off or longest dwell times.</p>
+            </div>
           </div>
-          <div>
-            <h3 className="text-xl font-bold text-navy mb-2">Error Recovery & Prevention</h3>
-            <p className="text-slate-600">
-              When incorrect credentials are provided, the system provides clear feedback rather than a generic "System Error." Error prevention is implemented by validating input fields before allowing form submission.
-            </p>
-          </div>
-        </div>
-
-        <div className="bg-white p-6 rounded-xl border-l-4 border-l-blue-500 border-y border-r border-slate-200 shadow-sm flex items-start gap-4 hover:-translate-y-1 transition-transform">
-          <div className="bg-blue-100 p-3 rounded-full text-blue-600 shrink-0">
-            <CheckCircle2 size={24} />
-          </div>
-          <div>
-            <h3 className="text-xl font-bold text-navy mb-2">Feedback & Consistency</h3>
-            <p className="text-slate-600">
-              Navigation items within the dashboard change visual state (color, underline) when active, providing immediate locational feedback. Button styles remain consistent across different modules (attendance, marks).
-            </p>
+          <div className="mt-6 text-xs font-bold text-slate-400 uppercase tracking-widest text-center">
+            Note: The evaluations discussed here represent standard HCI methodologies applied theoretically to the interface.
           </div>
         </div>
       </div>

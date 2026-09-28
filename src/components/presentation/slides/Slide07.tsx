@@ -1,63 +1,49 @@
-import { ArrowRight } from "lucide-react"
+import { Sparkles, Palette, Zap } from "lucide-react"
 
 export default function Slide07() {
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full bg-white">
       <header className="mb-12">
-        <h1 className="text-3xl md:text-4xl font-bold text-navy">Student Interaction Journey</h1>
-        <div className="w-16 h-1 bg-teal mt-4"></div>
+        <h1 className="text-5xl font-black text-slate-900 tracking-tight">Potential HCI Improvements</h1>
       </header>
 
-      <div className="flex-grow flex flex-col justify-center items-center relative">
-        <div className="w-full max-w-4xl relative">
-          {/* Connecting line */}
-          <div className="absolute top-1/2 left-0 w-full h-1 bg-slate-200 -translate-y-1/2 hidden md:block z-0"></div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 relative z-10">
-            
-            <div className="bg-white p-6 rounded-2xl border-2 border-slate-200 text-center shadow-md hover:border-navy transition-colors group">
-              <div className="w-12 h-12 bg-navy text-white rounded-full flex items-center justify-center mx-auto mb-4 font-bold text-xl group-hover:scale-110 transition-transform">1</div>
-              <h3 className="font-bold text-navy mb-2">Authentication</h3>
-              <p className="text-xs text-slate-500">User inputs Roll No & Password. System validates and provides entry.</p>
+      <div className="flex-grow flex flex-col md:flex-row gap-16 items-center">
+        <div className="w-full md:w-1/2 flex flex-col gap-10">
+          <div className="flex gap-6 items-start">
+            <Palette className="text-slate-900 shrink-0" size={32} />
+            <div>
+              <h3 className="font-bold text-slate-900 text-2xl mb-2">Visual Hierarchy Redesign</h3>
+              <p className="text-slate-600">Use distinct typography and spacing to guide the eye toward critical information (e.g., upcoming exam dates) rather than treating all text with equal weight.</p>
             </div>
-
-            <div className="hidden md:flex items-center justify-center -mx-4 z-20">
-              <div className="bg-white rounded-full p-1 border-2 border-slate-200 text-slate-400">
-                <ArrowRight size={20} />
-              </div>
-            </div>
-
-            <div className="bg-white p-6 rounded-2xl border-2 border-slate-200 text-center shadow-md hover:border-teal transition-colors group">
-              <div className="w-12 h-12 bg-teal text-white rounded-full flex items-center justify-center mx-auto mb-4 font-bold text-xl group-hover:scale-110 transition-transform">2</div>
-              <h3 className="font-bold text-navy mb-2">Navigation</h3>
-              <p className="text-xs text-slate-500">User scans the sidebar to locate the desired module (e.g., Attendance).</p>
-            </div>
-
-            <div className="hidden md:flex items-center justify-center -mx-4 z-20">
-              <div className="bg-white rounded-full p-1 border-2 border-slate-200 text-slate-400">
-                <ArrowRight size={20} />
-              </div>
-            </div>
-
-            <div className="bg-white p-6 rounded-2xl border-2 border-slate-200 text-center shadow-md hover:border-blue-600 transition-colors group">
-              <div className="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center mx-auto mb-4 font-bold text-xl group-hover:scale-110 transition-transform">3</div>
-              <h3 className="font-bold text-navy mb-2">Information Retrieval</h3>
-              <p className="text-xs text-slate-500">System presents data tabularly. User processes their current standing.</p>
-            </div>
-
-            <div className="hidden md:flex items-center justify-center -mx-4 z-20">
-              <div className="bg-white rounded-full p-1 border-2 border-slate-200 text-slate-400">
-                <ArrowRight size={20} />
-              </div>
-            </div>
-
-            <div className="bg-white p-6 rounded-2xl border-2 border-slate-200 text-center shadow-md hover:border-rose-500 transition-colors group">
-              <div className="w-12 h-12 bg-rose-500 text-white rounded-full flex items-center justify-center mx-auto mb-4 font-bold text-xl group-hover:scale-110 transition-transform">4</div>
-              <h3 className="font-bold text-navy mb-2">Task Completion</h3>
-              <p className="text-xs text-slate-500">User logs out or switches modules. Feedback confirms session end.</p>
-            </div>
-
           </div>
+          
+          <div className="flex gap-6 items-start">
+            <Sparkles className="text-slate-900 shrink-0" size={32} />
+            <div>
+              <h3 className="font-bold text-slate-900 text-2xl mb-2">Contextual Help & Microcopy</h3>
+              <p className="text-slate-600">Instead of complex error codes, use friendly microcopy that tells the student exactly how to fix the issue in plain language.</p>
+            </div>
+          </div>
+          
+          <div className="flex gap-6 items-start">
+            <Zap className="text-slate-900 shrink-0" size={32} />
+            <div>
+              <h3 className="font-bold text-slate-900 text-2xl mb-2">Action-Oriented Dashboard</h3>
+              <p className="text-slate-600">Transform the static dashboard into a dynamic one that brings urgent tasks (fees due, assignments pending) to the surface automatically.</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="w-full md:w-1/2 p-12 bg-slate-900 text-white min-h-[400px] flex flex-col justify-center border-l-8 border-slate-300">
+          <h3 className="text-sm font-bold tracking-widest uppercase mb-8 text-slate-400">The "Don't Make Me Think" Philosophy</h3>
+          
+          <blockquote className="text-3xl font-bold leading-tight mb-8">
+            "Every question a user has to ask themselves while looking at an interface (e.g., 'Where is the submit button?', 'Is this clickable?') adds to their cognitive load."
+          </blockquote>
+          
+          <p className="text-slate-400 text-lg">
+            Our proposed improvements aim to reduce these micro-frictions, creating a seamless flow from intention to action.
+          </p>
         </div>
       </div>
     </div>
