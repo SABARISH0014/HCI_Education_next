@@ -12,15 +12,10 @@ import Slide04 from "./slides/Slide04"
 import Slide05 from "./slides/Slide05"
 import Slide06 from "./slides/Slide06"
 import Slide07 from "./slides/Slide07"
-import Slide08 from "./slides/Slide08"
-import Slide09 from "./slides/Slide09"
-import Slide10 from "./slides/Slide10"
-import Slide11 from "./slides/Slide11"
 
 const SLIDES = [
   Slide01, Slide02, Slide03, Slide04, Slide05, 
-  Slide06, Slide07, Slide08, Slide09, Slide10, 
-  Slide11
+  Slide06, Slide07
 ]
 
 export default function PresentationViewer() {
@@ -116,7 +111,7 @@ export default function PresentationViewer() {
         </div>
         <h2 className="text-2xl font-bold text-navy mb-4">Native React Presentation</h2>
         <p className="text-slate-600 mb-8 max-w-md">
-          Experience the 11-slide interactive presentation natively built with React. Includes full keyboard support, animations, and fullscreen mode.
+          Experience the 7-slide interactive presentation natively built with React. Includes full keyboard support, animations, and fullscreen mode.
         </p>
         <button 
           onClick={() => setIsStarted(true)}

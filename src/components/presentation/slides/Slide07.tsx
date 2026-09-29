@@ -1,50 +1,60 @@
-import { Sparkles, Palette, Zap } from "lucide-react"
-
 export default function Slide07() {
   return (
     <div className="flex flex-col h-full bg-white">
       <header className="mb-12">
-        <h1 className="text-5xl font-black text-slate-900 tracking-tight">Potential HCI Improvements</h1>
+        <h1 className="text-5xl font-black text-slate-900 tracking-tight">References</h1>
       </header>
 
-      <div className="flex-grow flex flex-col md:flex-row gap-16 items-center">
-        <div className="w-full md:w-1/2 flex flex-col gap-10">
-          <div className="flex gap-6 items-start">
-            <Palette className="text-slate-900 shrink-0" size={32} />
+      <div className="flex-grow overflow-y-auto">
+        <ul className="space-y-8 max-w-4xl">
+          <li className="flex gap-6 border-b border-slate-100 pb-6">
+            <span className="text-slate-300 font-black text-2xl leading-none pt-1">01</span>
             <div>
-              <h3 className="font-bold text-slate-900 text-2xl mb-2">Visual Hierarchy Redesign</h3>
-              <p className="text-slate-600">Use distinct typography and spacing to guide the eye toward critical information (e.g., upcoming exam dates) rather than treating all text with equal weight.</p>
+              <p className="text-slate-900 font-bold text-md mb-1">Hasani, L. M., et al. (2024).</p>
+              <p className="text-slate-600 text-sm">Designing an online course using an EXD model: A case of HCI undergraduate course. Heliyon, 10(12), e33254.</p>
             </div>
-          </div>
+          </li>
           
-          <div className="flex gap-6 items-start">
-            <Sparkles className="text-slate-900 shrink-0" size={32} />
+          <li className="flex gap-6 border-b border-slate-100 pb-6">
+            <span className="text-slate-300 font-black text-2xl leading-none pt-1">02</span>
             <div>
-              <h3 className="font-bold text-slate-900 text-2xl mb-2">Contextual Help & Microcopy</h3>
-              <p className="text-slate-600">Instead of complex error codes, use friendly microcopy that tells the student exactly how to fix the issue in plain language.</p>
+              <p className="text-slate-900 font-bold text-md mb-1">Tunsisa, B., & Demissie, D. (2024).</p>
+              <p className="text-slate-600 text-sm">Assessing the Students' Usability of e-Learning Management System: Case in Hawassa University. Int. Journal of Computer Games Technology.</p>
             </div>
-          </div>
+          </li>
           
-          <div className="flex gap-6 items-start">
-            <Zap className="text-slate-900 shrink-0" size={32} />
+          <li className="flex gap-6 border-b border-slate-100 pb-6">
+            <span className="text-slate-300 font-black text-2xl leading-none pt-1">03</span>
             <div>
-              <h3 className="font-bold text-slate-900 text-2xl mb-2">Action-Oriented Dashboard</h3>
-              <p className="text-slate-600">Transform the static dashboard into a dynamic one that brings urgent tasks (fees due, assignments pending) to the surface automatically.</p>
+              <p className="text-slate-900 font-bold text-md mb-1">Abuhlfaia, K., & de Quincey, E. (2018).</p>
+              <p className="text-slate-600 text-sm">Cited in original presentation context.</p>
             </div>
-          </div>
-        </div>
-
-        <div className="w-full md:w-1/2 p-12 bg-slate-900 text-white min-h-[400px] flex flex-col justify-center border-l-8 border-slate-300">
-          <h3 className="text-sm font-bold tracking-widest uppercase mb-8 text-slate-400">The "Don't Make Me Think" Philosophy</h3>
+          </li>
           
-          <blockquote className="text-3xl font-bold leading-tight mb-8">
-            "Every question a user has to ask themselves while looking at an interface (e.g., 'Where is the submit button?', 'Is this clickable?') adds to their cognitive load."
-          </blockquote>
+          <li className="flex gap-6 border-b border-slate-100 pb-6">
+            <span className="text-slate-300 font-black text-2xl leading-none pt-1">04</span>
+            <div>
+              <p className="text-slate-900 font-bold text-md mb-1">Lu, Y., et al. (2022).</p>
+              <p className="text-slate-600 text-sm">Cited in original presentation context.</p>
+            </div>
+          </li>
           
-          <p className="text-slate-400 text-lg">
-            Our proposed improvements aim to reduce these micro-frictions, creating a seamless flow from intention to action.
-          </p>
-        </div>
+          <li className="flex gap-6 border-b border-slate-100 pb-6">
+            <span className="text-slate-300 font-black text-2xl leading-none pt-1">05</span>
+            <div>
+              <p className="text-slate-900 font-bold text-md mb-1">Gopal, R. (2024).</p>
+              <p className="text-slate-600 text-sm">Cited in original presentation context.</p>
+            </div>
+          </li>
+          
+          <li className="flex gap-6">
+            <span className="text-slate-300 font-black text-2xl leading-none pt-1">06</span>
+            <div>
+              <p className="text-slate-900 font-bold text-md mb-1">PSG College of Technology.</p>
+              <p className="text-slate-600 text-sm">E-Campus Student Portal Interface.</p>
+            </div>
+          </li>
+        </ul>
       </div>
     </div>
   )

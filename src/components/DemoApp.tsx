@@ -1,7 +1,7 @@
 "use client"
 
-import { useState } from "react"
-import { MonitorPlay, Info, AlertTriangle, Presentation as PresentationIcon, Settings, Eye, CheckCircle2, Lock } from "lucide-react"
+import { useState, useEffect } from "react"
+import { MonitorPlay, Info, AlertTriangle, Presentation as PresentationIcon, Settings, Eye, Lock, ThumbsUp, ThumbsDown } from "lucide-react"
 import DemoLogin from "./DemoLogin"
 import DemoDashboard from "./DemoDashboard"
 import { hciPrinciples } from "@/data/principles"
@@ -10,66 +10,73 @@ export default function DemoApp() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [analysisMode, setAnalysisMode] = useState(false)
   const [presentationMode, setPresentationMode] = useState(false)
+  const [designMode, setDesignMode] = useState<'GOOD' | 'POOR'>('GOOD')
   const [activePrinciple, setActivePrinciple] = useState<string | null>(null)
   
-  // For presentation guided steps
   const [presentationStep, setPresentationStep] = useState(0)
   
   const presentationSteps = [
-    { title: "Introduction", desc: "Welcome to the E-Campus simulated login screen." },
-    { title: "Visibility", desc: "Notice how the input fields and primary actions are clearly identifiable.", principle: "visibility" },
-    { title: "Error Prevention", desc: "The login button is disabled until required fields are filled.", principle: "error-prevention" },
-    { title: "Error Recovery", desc: "A 'Forgot Password' link provides an escape route.", principle: "error-recovery" },
-    { title: "Feedback", desc: "We'll demonstrate feedback via error/success messages upon interaction.", principle: "feedback" },
-    { title: "Dashboard Learnability", desc: "Let's log in and see how a consistent dashboard helps learnability.", principle: "learnability" },
-    { title: "Accessibility", desc: "Semantic labels and focus states make this usable for everyone.", principle: "accessibility" }
+    { title: "Introduction", desc: "Welcome to the simulated E-Campus portal.", mode: "GOOD", principle: null },
+    { title: "Good Design: Login", desc: "A correctly designed login interface with clear labels and contrast.", principle: "accessibility", mode: "GOOD" },
+    { title: "Visibility & Feedback", desc: "The system provides clear feedback upon interaction.", principle: "visibility", mode: "GOOD" },
+    { title: "Error Prevention", desc: "The form validates data before submission.", principle: "error-prevention", mode: "GOOD" },
+    { title: "Switch to Poor Design", desc: "Now let's see the same interface with HCI principles ignored.", mode: "POOR", principle: null },
+    { title: "Poor Design Demo", desc: "Observe the lack of feedback, poor contrast, and missing validation.", principle: null, mode: "POOR" },
+    { title: "Analysis of Issues", desc: "Analysis Mode reveals the specific violations.", principle: "error-prevention", mode: "POOR" },
+    { title: "Back to Good Design", desc: "Returning to Good Design highlights the improvements.", principle: "feedback", mode: "GOOD" }
   ]
 
   const handleLoginSuccess = () => {
     setIsLoggedIn(true)
-    if (presentationMode && presentationStep === 5) {
-      setPresentationStep(6)
-    }
   }
 
   const handleLogout = () => {
     setIsLoggedIn(false)
   }
 
+  const applyStep = (stepIndex: number) => {
+    const step = presentationSteps[stepIndex]
+    if (step.mode) setDesignMode(step.mode as 'GOOD' | 'POOR')
+    if (step.principle) {
+      setAnalysisMode(true)
+      setActivePrinciple(step.principle)
+    } else {
+      if (stepIndex > 0) setAnalysisMode(true) // Keep it on for demo unless specified
+      else setAnalysisMode(false)
+      setActivePrinciple(null)
+    }
+  }
+
   const handleNextStep = () => {
     if (presentationStep < presentationSteps.length - 1) {
-      const nextStep = presentationStep + 1;
+      const nextStep = presentationStep + 1
       setPresentationStep(nextStep)
-      
-      if (presentationSteps[nextStep].principle) {
-        setAnalysisMode(true)
-        setActivePrinciple(presentationSteps[nextStep].principle || null)
-      } else {
-        setAnalysisMode(false)
-        setActivePrinciple(null)
-      }
+      applyStep(nextStep)
     }
   }
 
   const handlePrevStep = () => {
     if (presentationStep > 0) {
-      const prevStep = presentationStep - 1;
+      const prevStep = presentationStep - 1
       setPresentationStep(prevStep)
-      
-      if (presentationSteps[prevStep].principle) {
-        setAnalysisMode(true)
-        setActivePrinciple(presentationSteps[prevStep].principle || null)
-      } else {
-        setAnalysisMode(false)
-        setActivePrinciple(null)
-      }
+      applyStep(prevStep)
     }
   }
+  
+  useEffect(() => {
+    if (presentationMode) {
+      applyStep(presentationStep)
+    } else {
+      setAnalysisMode(false)
+      setActivePrinciple(null)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [presentationMode])
 
   return (
-    <div className="flex flex-col lg:flex-row gap-8 w-full max-w-7xl mx-auto px-2">
+    <div className="flex flex-col xl:flex-row gap-8 w-full max-w-[1400px] mx-auto px-2">
       {/* Main Demo Area */}
-      <div className={`flex-grow rounded-3xl overflow-hidden border shadow-2xl bg-slate-50 relative min-h-[650px] flex flex-col transition-all duration-500 ${analysisMode ? 'border-teal ring-4 ring-teal/20 shadow-teal-500/20' : 'border-slate-300 shadow-slate-300/30'}`}>
+      <div className={`flex-grow rounded-3xl overflow-hidden border shadow-2xl bg-slate-50 relative min-h-[750px] flex flex-col transition-all duration-500 ${analysisMode ? 'border-teal ring-4 ring-teal/20 shadow-teal-500/20' : 'border-slate-300 shadow-slate-300/30'}`}>
         
         {/* Modern Browser Mockup Header */}
         <div className="bg-slate-100 px-4 py-3 flex items-center justify-between text-xs border-b border-slate-300 select-none">
@@ -85,116 +92,64 @@ export default function DemoApp() {
           </div>
           
           <div className="w-1/4 flex justify-end">
-            <div className="text-amber-600 font-bold px-2 py-0.5 flex items-center gap-1 bg-amber-100 rounded-md shadow-sm border border-amber-200 text-[10px] tracking-wider">
-              <AlertTriangle size={12} /> SIMULATION
+            <div className={`font-bold px-3 py-1 flex items-center gap-1.5 rounded-md shadow-sm border text-[10px] tracking-wider transition-colors duration-300 ${designMode === 'GOOD' ? 'bg-emerald-100 border-emerald-200 text-emerald-800' : 'bg-rose-100 border-rose-200 text-rose-800'}`}>
+              <AlertTriangle size={12} /> {designMode === 'GOOD' ? 'GOOD DESIGN' : 'POOR DESIGN'}
             </div>
           </div>
         </div>
 
         {/* The Application Area */}
-        <div className={`relative flex-grow flex items-center justify-center p-4 md:p-8 bg-gradient-to-br from-slate-100 to-slate-200 overflow-hidden ${presentationMode ? 'scale-[1.02] transform origin-top transition-transform duration-500' : 'transition-transform duration-500'}`}>
-          {/* Spotlight Overlay */}
-          <div 
-            className={`absolute inset-0 z-[5] pointer-events-none transition-all duration-500 ${analysisMode && activePrinciple ? 'opacity-100' : 'opacity-0'}`} 
-            aria-hidden="true"
-          />
-          
+        <div className={`relative flex-grow flex items-center justify-center p-4 md:p-8 overflow-hidden ${presentationMode ? 'scale-[1.02] transform origin-top transition-transform duration-500' : 'transition-transform duration-500'} ${designMode === 'GOOD' ? 'bg-gradient-to-br from-slate-100 to-slate-200' : 'bg-zinc-200'}`}>
           {isLoggedIn ? (
             <DemoDashboard 
               onLogout={handleLogout} 
               analysisMode={analysisMode} 
-              activePrinciple={activePrinciple} 
+              activePrinciple={activePrinciple}
+              setActivePrinciple={setActivePrinciple}
+              designMode={designMode}
             />
           ) : (
             <DemoLogin 
               onLoginSuccess={handleLoginSuccess}
               analysisMode={analysisMode}
               activePrinciple={activePrinciple}
+              setActivePrinciple={setActivePrinciple}
+              designMode={designMode}
             />
           )}
         </div>
       </div>
 
       {/* Control Panel */}
-      <div className="w-full lg:w-96 flex flex-col gap-4">
-        {/* Mode Toggles */}
-        <div className="bg-slate-900/50 p-5 rounded-xl border border-slate-800 shadow-sm backdrop-blur-sm">
-          <h3 className="font-bold text-white mb-4 flex items-center gap-2">
-            <Settings size={18} className="text-teal-400" /> Demo Controls
-          </h3>
-          
-          <div className="space-y-3">
-            <label className="flex items-center justify-between p-3 rounded-lg border border-slate-800 cursor-pointer transition-colors hover:bg-slate-800/50">
-              <div className="flex items-center gap-3">
-                <div className={`p-2 rounded-md ${analysisMode ? 'bg-teal text-slate-950' : 'bg-slate-800 text-slate-400'}`}>
-                  <Eye size={18} />
-                </div>
-                <div>
-                  <div className="font-semibold text-sm text-slate-200">HCI Analysis Mode</div>
-                  <div className="text-xs text-slate-400">Highlight UI principles</div>
-                </div>
-              </div>
-              <div className={`w-10 h-5 rounded-full relative transition-colors ${analysisMode ? 'bg-teal' : 'bg-slate-300'}`}>
-                <div className={`w-4 h-4 rounded-full bg-white absolute top-0.5 transition-all ${analysisMode ? 'left-5.5' : 'left-0.5'}`}></div>
-              </div>
-              <input 
-                type="checkbox" 
-                className="hidden" 
-                checked={analysisMode} 
-                onChange={(e) => setAnalysisMode(e.target.checked)} 
-              />
-            </label>
-
-            <label className="flex items-center justify-between p-3 rounded-lg border border-slate-800 cursor-pointer transition-colors hover:bg-slate-800/50">
-              <div className="flex items-center gap-3">
-                <div className={`p-2 rounded-md ${presentationMode ? 'bg-purple-500 text-white' : 'bg-slate-800 text-slate-400'}`}>
-                  <PresentationIcon size={18} />
-                </div>
-                <div>
-                  <div className="font-semibold text-sm text-slate-200">Presentation Mode</div>
-                  <div className="text-xs text-slate-400">Guided step-by-step</div>
-                </div>
-              </div>
-              <div className={`w-10 h-5 rounded-full relative transition-colors ${presentationMode ? 'bg-purple-600' : 'bg-slate-300'}`}>
-                <div className={`w-4 h-4 rounded-full bg-white absolute top-0.5 transition-all ${presentationMode ? 'left-5.5' : 'left-0.5'}`}></div>
-              </div>
-              <input 
-                type="checkbox" 
-                className="hidden" 
-                checked={presentationMode} 
-                onChange={(e) => setPresentationMode(e.target.checked)} 
-              />
-            </label>
-          </div>
-        </div>
-
+      <div className="w-full xl:w-[450px] flex flex-col gap-4">
+        
         {/* Presentation Controls */}
         {presentationMode && (
-          <div className="bg-purple-950/30 p-5 rounded-xl border border-purple-900/50 shadow-sm animate-in fade-in slide-in-from-top-4">
-            <h3 className="font-bold text-purple-300 mb-2 flex items-center gap-2">
-              <MonitorPlay size={18} /> Live Presentation
+          <div className="bg-purple-950 p-5 rounded-xl border border-purple-900/50 shadow-sm animate-in fade-in slide-in-from-top-4">
+            <h3 className="font-bold text-purple-300 mb-4 flex items-center gap-2">
+              <PresentationIcon size={18} /> Guided Walkthrough
             </h3>
             
-            <div className="bg-slate-900/80 p-4 rounded-lg border border-purple-900/50 mb-4 shadow-sm">
+            <div className="bg-slate-900/80 p-4 rounded-lg border border-purple-900/50 mb-5 shadow-sm">
               <div className="text-xs font-bold text-purple-400 mb-1 uppercase tracking-wider">
                 Step {presentationStep + 1} of {presentationSteps.length}
               </div>
-              <h4 className="font-bold text-slate-100 mb-1">{presentationSteps[presentationStep].title}</h4>
-              <p className="text-sm text-slate-300">{presentationSteps[presentationStep].desc}</p>
+              <h4 className="font-bold text-slate-100 mb-1 text-lg">{presentationSteps[presentationStep].title}</h4>
+              <p className="text-sm text-slate-300 leading-relaxed">{presentationSteps[presentationStep].desc}</p>
             </div>
             
-            <div className="flex gap-2">
+            <div className="flex gap-3">
               <button 
                 onClick={handlePrevStep}
                 disabled={presentationStep === 0}
-                className="flex-1 py-2 px-4 rounded-lg font-medium text-sm border border-purple-800 text-purple-300 bg-slate-900 hover:bg-purple-900/40 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="flex-1 py-3 px-4 rounded-lg font-bold text-sm border border-purple-800 text-purple-300 bg-slate-900 hover:bg-purple-900/40 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 Previous
               </button>
               <button 
                 onClick={handleNextStep}
                 disabled={presentationStep === presentationSteps.length - 1}
-                className="flex-1 py-2 px-4 rounded-lg font-medium text-sm bg-purple-600 text-white hover:bg-purple-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="flex-1 py-3 px-4 rounded-lg font-bold text-sm bg-purple-600 text-white hover:bg-purple-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-lg"
               >
                 Next Step
               </button>
@@ -202,61 +157,138 @@ export default function DemoApp() {
           </div>
         )}
 
-        {/* Principles Explorer */}
-        {analysisMode && !presentationMode && (
-          <div className="bg-slate-900/50 p-5 rounded-xl border border-teal-900/30 shadow-sm flex-grow flex flex-col backdrop-blur-sm">
-            <h3 className="font-bold text-teal-400 mb-4 flex items-center gap-2">
-              <Info size={18} /> Explore HCI Principles
+        {/* Mode Toggles */}
+        <div className="bg-slate-900 p-6 rounded-xl border border-slate-800 shadow-lg">
+          <h3 className="font-bold text-white mb-5 flex items-center gap-2">
+            <Settings size={18} className="text-teal-400" /> Interaction Controls
+          </h3>
+          
+          <div className="space-y-4">
+            {/* Design Mode Toggle */}
+            <div className="flex bg-slate-800 rounded-lg p-1.5 border border-slate-700">
+              <button
+                onClick={() => setDesignMode('GOOD')}
+                className={`flex-1 flex items-center justify-center gap-2 py-2.5 px-3 rounded-md text-sm font-bold transition-all ${designMode === 'GOOD' ? 'bg-emerald-500 text-white shadow-md' : 'text-slate-400 hover:text-white'}`}
+              >
+                <ThumbsUp size={16} /> Good Design
+              </button>
+              <button
+                onClick={() => setDesignMode('POOR')}
+                className={`flex-1 flex items-center justify-center gap-2 py-2.5 px-3 rounded-md text-sm font-bold transition-all ${designMode === 'POOR' ? 'bg-rose-500 text-white shadow-md' : 'text-slate-400 hover:text-white'}`}
+              >
+                <ThumbsDown size={16} /> Poor Design
+              </button>
+            </div>
+
+            <label className="flex items-center justify-between p-4 rounded-lg border border-slate-800 cursor-pointer transition-colors hover:bg-slate-800/50">
+              <div className="flex items-center gap-3">
+                <div className={`p-2 rounded-md ${analysisMode ? 'bg-teal text-slate-950' : 'bg-slate-800 text-slate-400'}`}>
+                  <Eye size={18} />
+                </div>
+                <div>
+                  <div className="font-bold text-sm text-slate-200">HCI Analysis Mode</div>
+                  <div className="text-xs text-slate-400 mt-0.5">Highlight applied principles</div>
+                </div>
+              </div>
+              <div className={`w-12 h-6 rounded-full relative transition-colors ${analysisMode ? 'bg-teal' : 'bg-slate-600'}`}>
+                <div className={`w-5 h-5 rounded-full bg-white absolute top-0.5 transition-all ${analysisMode ? 'left-6.5 translate-x-[22px]' : 'left-0.5'}`}></div>
+              </div>
+              <input type="checkbox" className="hidden" checked={analysisMode} onChange={(e) => setAnalysisMode(e.target.checked)} />
+            </label>
+
+            <label className="flex items-center justify-between p-4 rounded-lg border border-slate-800 cursor-pointer transition-colors hover:bg-slate-800/50">
+              <div className="flex items-center gap-3">
+                <div className={`p-2 rounded-md ${presentationMode ? 'bg-purple-500 text-white' : 'bg-slate-800 text-slate-400'}`}>
+                  <MonitorPlay size={18} />
+                </div>
+                <div>
+                  <div className="font-bold text-sm text-slate-200">Classroom Presentation</div>
+                  <div className="text-xs text-slate-400 mt-0.5">Guided step-by-step tour</div>
+                </div>
+              </div>
+              <div className={`w-12 h-6 rounded-full relative transition-colors ${presentationMode ? 'bg-purple-500' : 'bg-slate-600'}`}>
+                <div className={`w-5 h-5 rounded-full bg-white absolute top-0.5 transition-all ${presentationMode ? 'left-6.5 translate-x-[22px]' : 'left-0.5'}`}></div>
+              </div>
+              <input type="checkbox" className="hidden" checked={presentationMode} onChange={(e) => setPresentationMode(e.target.checked)} />
+            </label>
+          </div>
+        </div>
+
+        {/* Principles Explorer / Analysis Panel */}
+        {analysisMode && (
+          <div className="bg-slate-900 p-6 rounded-xl border border-teal-900/50 shadow-lg flex-grow flex flex-col min-h-[300px]">
+            <h3 className="font-bold text-teal-400 mb-5 flex items-center gap-2 text-lg">
+              <Info size={20} /> Analysis Panel
             </h3>
             
-            <div className="flex flex-col gap-2 flex-grow overflow-y-auto max-h-[400px] pr-1">
-              {hciPrinciples.map(principle => (
-                <button
-                  key={principle.id}
-                  onClick={() => setActivePrinciple(principle.id === activePrinciple ? null : principle.id)}
-                  className={`text-left p-3 rounded-lg border transition-all ${
-                    activePrinciple === principle.id 
-                      ? 'bg-teal text-slate-950 border-teal shadow-md' 
-                      : 'bg-slate-800 text-slate-200 hover:border-teal/50 hover:bg-slate-800/80 border-slate-700'
-                  }`}
+            {!activePrinciple ? (
+              <div className="flex-grow overflow-y-auto pr-2 custom-scrollbar">
+                <div className="bg-slate-800/50 border border-slate-700 p-4 rounded-lg mb-6">
+                  <p className="text-slate-300 text-sm leading-relaxed">
+                    <strong>Interactive Markers:</strong> Click any numbered marker on the interface to see a detailed HCI analysis of that specific element, or select a principle from the list below.
+                  </p>
+                </div>
+                <div className="flex flex-col gap-3">
+                  {hciPrinciples.map(principle => (
+                    <button
+                      key={principle.id}
+                      onClick={() => setActivePrinciple(principle.id)}
+                      className="text-left p-4 rounded-lg border border-slate-700 bg-slate-800 hover:border-teal/50 transition-colors shadow-sm"
+                    >
+                      <div className="font-bold text-sm text-slate-200 mb-1">{principle.name}</div>
+                      <div className="text-xs text-slate-400 line-clamp-2 leading-relaxed">{principle.definition}</div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <div className="animate-in fade-in slide-in-from-right-4 flex flex-col h-full">
+                <button 
+                  onClick={() => setActivePrinciple(null)}
+                  className="text-teal-400 text-xs font-bold uppercase tracking-wider hover:text-teal-300 mb-6 text-left flex items-center gap-1"
                 >
-                  <div className="font-bold text-sm mb-1">{principle.name}</div>
-                  <div className={`text-xs ${activePrinciple === principle.id ? 'text-teal-950' : 'text-slate-400'}`}>
-                    {principle.definition}
-                  </div>
+                  ← Return to all principles
                 </button>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Active Principle Details */}
-        {analysisMode && activePrinciple && (
-          <div className="bg-navy p-5 rounded-xl border border-navy-light text-white shadow-lg animate-in fade-in">
-            {(() => {
-              const p = hciPrinciples.find(x => x.id === activePrinciple)
-              if (!p) return null;
-              
-              return (
-                <>
-                  <h3 className="font-bold text-teal-light mb-2 text-lg">{p.name}</h3>
-                  <div className="space-y-3 text-sm text-slate-300">
-                    <div>
-                      <span className="font-semibold text-white block mb-1">What it is:</span>
-                      {p.definition}
+                
+                {(() => {
+                  const p = hciPrinciples.find(x => x.id === activePrinciple)
+                  if (!p) return null;
+                  
+                  const isGood = designMode === 'GOOD'
+                  const statusText = isGood ? p.status?.good : p.status?.poor
+                  const statusColor = isGood ? 'text-emerald-400 bg-emerald-400/10 border-emerald-400/20' : 'text-rose-400 bg-rose-400/10 border-rose-400/20'
+                  
+                  return (
+                    <div className="space-y-6 overflow-y-auto pr-2 custom-scrollbar">
+                      <div>
+                        <h3 className="font-bold text-white text-2xl mb-3">{p.name}</h3>
+                        <div className={`inline-block px-3 py-1.5 rounded border text-xs font-bold tracking-wider mb-5 shadow-sm ${statusColor}`}>
+                          {statusText}
+                        </div>
+                        <p className="text-slate-300 text-sm leading-relaxed">{p.definition}</p>
+                      </div>
+                      
+                      <div className="bg-slate-800/80 p-5 rounded-xl border border-slate-700 shadow-inner">
+                        <h4 className="text-white font-bold text-sm mb-2 uppercase tracking-widest text-xs">Explanation</h4>
+                        <p className="text-slate-400 text-sm mb-5 leading-relaxed">{isGood ? p.explanation?.good : p.explanation?.poor}</p>
+                        
+                        <h4 className="text-white font-bold text-sm mb-2 uppercase tracking-widest text-xs">{isGood ? 'User Benefit' : 'User Impact'}</h4>
+                        <p className="text-slate-400 text-sm mb-5 leading-relaxed">{isGood ? p.userImpact?.good : p.userImpact?.poor}</p>
+                        
+                        {!isGood && p.suggestedImprovement && (
+                          <div className="bg-teal-900/20 p-4 rounded-lg border border-teal-900/50 mt-2">
+                            <h4 className="text-teal-400 font-bold text-sm mb-2 flex items-center gap-2">
+                              <ThumbsUp size={16} /> Suggested Improvement
+                            </h4>
+                            <p className="text-teal-100/70 text-sm leading-relaxed">{p.suggestedImprovement}</p>
+                          </div>
+                        )}
+                      </div>
                     </div>
-                    <div>
-                      <span className="font-semibold text-white block mb-1">Where to look:</span>
-                      {p.location}
-                    </div>
-                    <div className="bg-white/10 p-3 rounded-lg border border-white/10">
-                      <span className="font-semibold text-white block mb-1">Why it matters:</span>
-                      {p.importance}
-                    </div>
-                  </div>
-                </>
-              )
-            })()}
+                  )
+                })()}
+              </div>
+            )}
           </div>
         )}
       </div>
